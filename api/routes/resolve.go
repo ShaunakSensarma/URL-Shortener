@@ -18,7 +18,7 @@ func ResolveURL(c *fiber.Ctx) error {
 			"error": "short not found in database",
 		})
 	} else if err != nil {
-		return c.Status(fiber.StatusInternalError).JSON(fiber.Map{
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "cannot connect to DB",
 		})
 	}
