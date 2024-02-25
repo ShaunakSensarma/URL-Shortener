@@ -6,11 +6,19 @@ The go server will interact with the REDIS server which is our database at PORT:
 ## High Level Design.
 Three major components:
 1. api  
-    i) Database     : logic to connect to the database.  
-   ii) Helpers      : will have some functions to help the routes.  
-  iii) Routes       : routes on which we will post and shorten our URL.  
-   iv) Dockerfile   : to have golang specific code.  
+    a. Database     : logic to connect to the database.  
+    b. Helpers      : will have some functions to help the routes.  
+    c. Routes       : routes on which we will post and shorten our URL.  
+    d. Dockerfile   : to have golang specific code.  
 2. data
 3. db  
-    i) Dockerfile   : Going to contain some container for our redis database.  
+    a. Dockerfile   : Going to contain some container for our redis database.  
 
+
+## Few commands to run
+to install all the dependencies go to "api" directory and execute command: 'go mod tidy'  
+The above command will intall all the dependencies.
+
+
+## Command to run the project:
+docker-compose up -d
