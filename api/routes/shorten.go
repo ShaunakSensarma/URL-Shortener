@@ -8,8 +8,8 @@ import (
 	"github.com/ShaunakSensarma/URL-Shortener/database"
 	"github.com/ShaunakSensarma/URL-Shortener/helpers"
 	"github.com/asaskevich/govalidator"
-	"github.com/go-redis/redis"
-	"github.com/gofiber/fiber"
+	"github.com/go-redis/redis/v8"
+	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 )
 
