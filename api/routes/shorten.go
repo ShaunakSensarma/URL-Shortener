@@ -13,6 +13,10 @@ import (
 	"github.com/google/uuid"
 )
 
+/*
+defining request and response structure to have a format the the frontend will expect.
+makes sure the code is very stable.
+*/
 type request struct {
 	URL         string        `json:"url"`
 	CustomShort string        `json:"short"`
@@ -27,14 +31,18 @@ type response struct {
 	XRateLimitReset time.Duration `json:"rate_limit_reset"`
 }
 
+// shortenURL is responsible for shortening the URL.
 func ShortenURL(c *fiber.Ctx) error {
 	body := new(request)
 
+	// to parse the input JSON into struct defined above.
 	if err := c.BodyParser(&body); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"eror": "cannot parse JSON"})
 	}
 
-	//implement rate limiting.
+	//-----------------------------------------------------------------------------------------------
+	// IMPLEMENT RATE LIMITER.
+	//-----------------------------------------------------------------------------------------------
 	r2 := database.CreateClient(1)
 	defer r2.Close()
 
@@ -53,12 +61,14 @@ func ShortenURL(c *fiber.Ctx) error {
 		}
 	}
 
-	//check if the input is an actual URL.
+	//-----------------------------------------------------------------------------------------------
+
+	// check if the input is an actual URL.
 	if !govalidator.IsURL(body.URL) {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid URL"})
 	}
 
-	//check for domain error.
+	// check for domain error.
 	if !helpers.RemoveDomainError(body.URL) {
 		return c.Status(fiber.StatusServiceUnavailable).JSON(fiber.Map{"error": "You have gone to bad address"})
 	}

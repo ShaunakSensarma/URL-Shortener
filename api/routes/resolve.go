@@ -6,6 +6,10 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+/*
+ResolveURL resolves the shortened URL and checks whether the shortened URL is present in our database.
+If present in database, it redirects the user to the actual URL.
+*/
 func ResolveURL(c *fiber.Ctx) error {
 	url := c.Params("url")
 
@@ -15,7 +19,7 @@ func ResolveURL(c *fiber.Ctx) error {
 	value, err := r.Get(database.Ctx, url).Result()
 	if err == redis.Nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"error": "short not found in database",
+			"error": "short url not found in database",
 		})
 	} else if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -28,5 +32,6 @@ func ResolveURL(c *fiber.Ctx) error {
 
 	_ = rInr.Incr(database.Ctx, "counter")
 
+	// redirecting to the actual URL.
 	return c.Redirect(value, 301)
 }
